@@ -1,0 +1,7 @@
+__pycache__/
+build/
+dist/
+venv/
+oxygen2.egg-info/
+
+main.py
