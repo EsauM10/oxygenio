@@ -2,6 +2,7 @@ __pycache__/
 build/
 dist/
 venv/
-oxygen2.egg-info/
+oxygenio.egg-info/
 
 main.py
+config.json
