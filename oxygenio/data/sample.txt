@@ -1,0 +1,10 @@
+from oxygenio.server import Oxygenio 
+
+app = Oxygenio()
+
+@app.on
+def hello():
+    print('Hello World')
+
+if(__name__=='__main__'):
+    app.run(host='localhost', port=8001, browser='chrome')
