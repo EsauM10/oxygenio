@@ -1,26 +1,30 @@
 import json
+import os
+from pathlib import Path
 
-from oxygenio.helpers import ModeType
+from oxygenio.helpers import ModeType, read_file
 
+ROOT_PATH = str(Path(__file__).parent.parent)
 
 class ConfigLoader:
-    def __init__(self, config_file: str) -> None:
-        self.mode: ModeType = 'dev'
-        self.dev_command = ''
+    def __init__(self, build: bool) -> None:
+        self.__mode: ModeType = 'build' if(build) else 'dev'
+        self.file = 'config.json'
         self.build_command = ''
         self.app_url = ''
         self.dist_folder = ''
-        self.load(config_file)
+        self.load()
     
-    def load(self, config_file: str):
-        with open(config_file, mode='r') as file:
-            data = json.loads(file.read())
+    @property
+    def is_dev_mode(self) -> bool:
+        return self.__mode == 'dev'
 
-        mode = str(data['mode'])
-        if(mode != 'dev' and mode != 'build'):
-            raise Exception(f'Expecting one of: {["dev", "build"]}')
+    def load(self):
+        if(not self.is_dev_mode):
+            self.file = os.path.join(ROOT_PATH, 'config.json')
+        
+        data = json.loads(read_file(self.file))
 
-        self.mode = mode
         self.dev_command = str(data['devCommand'])
         self.build_command = str(data['buildCommand'])
         self.app_url = str(data['appURL'])

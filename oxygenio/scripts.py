@@ -19,7 +19,6 @@ def build():
 
 def create():
     data = {
-        'mode': 'dev',
         'devCommand': 'npm run dev',
         'buildCommand': 'npm run build',
         'appURL': 'http://localhost:5173',
