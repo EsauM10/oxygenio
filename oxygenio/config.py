@@ -14,6 +14,7 @@ class ConfigLoader:
         self.build_command = ''
         self.app_url = ''
         self.dist_folder = ''
+        self.frontend_app = ''
         self.load()
     
     @property
@@ -26,7 +27,8 @@ class ConfigLoader:
         
         data = json.loads(read_file(self.file))
 
+        self.app_url = str(data['appURL'])
         self.dev_command = str(data['devCommand'])
         self.build_command = str(data['buildCommand'])
-        self.app_url = str(data['appURL'])
         self.dist_folder = str(data['distFolder'])
+        self.frontend_app = str(data['frontendApp'])

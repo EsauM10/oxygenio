@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+from oxygenio.config import ConfigLoader
 
 from oxygenio.helpers import create_file, read_file
 
@@ -19,9 +20,10 @@ def build():
 
 def create():
     data = {
-        'devCommand': 'npm run dev',
-        'buildCommand': 'npm run build',
         'appURL': 'http://localhost:5173',
+        'devCommand': 'npm --prefix=web run dev',
+        'buildCommand': 'npm --prefix=web run build',
+        'frontendApp': 'web',
         'distFolder': 'dist'
     }
     print('Creating config.json 📂...')
