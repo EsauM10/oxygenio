@@ -15,13 +15,17 @@ class ConfigLoader:
         self.app_url = ''
         self.dist_folder = ''
         self.frontend_app = ''
-        self.load()
+        self.__load()
+    
+    @property
+    def dist_path(self) -> str:
+        return str(os.path.join(self.frontend_app, self.dist_folder))
     
     @property
     def is_dev_mode(self) -> bool:
         return self.__mode == 'dev'
-
-    def load(self):
+    
+    def __load(self):
         if(not self.is_dev_mode):
             self.file = os.path.join(ROOT_PATH, 'config.json')
         
