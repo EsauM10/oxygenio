@@ -1,4 +1,4 @@
-from oxygenio.server import Oxygenio 
+from oxygenio import Oxygenio 
 
 app = Oxygenio()
 

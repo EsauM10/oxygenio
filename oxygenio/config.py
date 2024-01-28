@@ -5,11 +5,13 @@ from pathlib import Path
 from oxygenio.helpers import ModeType, read_file
 
 ROOT_PATH = str(Path(__file__).parent.parent)
+CONFIG_FILENAME = 'config.json'
+
 
 class ConfigLoader:
     def __init__(self, build: bool = False) -> None:
         self.__mode: ModeType = 'build' if(build) else 'dev'
-        self.file = 'config.json'
+        self.file = CONFIG_FILENAME
         self.dev_command = ''
         self.build_command = ''
         self.app_url = ''
@@ -19,7 +21,7 @@ class ConfigLoader:
     
     @property
     def dist_path(self) -> str:
-        return str(os.path.join(self.frontend_app, self.dist_folder))
+        return os.path.join(self.frontend_app, self.dist_folder)
     
     @property
     def is_dev_mode(self) -> bool:
@@ -27,7 +29,7 @@ class ConfigLoader:
     
     def __load(self):
         if(not self.is_dev_mode):
-            self.file = os.path.join(ROOT_PATH, 'config.json')
+            self.file = os.path.join(ROOT_PATH, CONFIG_FILENAME)
         
         data = json.loads(read_file(self.file))
 

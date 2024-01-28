@@ -2,7 +2,7 @@ import argparse
 import json
 import os
 from pathlib import Path
-from oxygenio.config import ConfigLoader
+from oxygenio.config import CONFIG_FILENAME, ConfigLoader
 
 from oxygenio.helpers import create_file, read_file
 
@@ -26,8 +26,8 @@ def create():
         'frontendApp': 'web',
         'distFolder': 'dist'
     }
-    print('Creating config.json 📂...')
-    create_file('config.json', json.dumps(data, indent=4))
+    print(f'Creating {CONFIG_FILENAME} 📂...')
+    create_file(CONFIG_FILENAME, json.dumps(data, indent=4))
 
     print('Creating main.py 📄...')
     sample_file = os.path.join(DATA_DIR, 'sample.txt')
