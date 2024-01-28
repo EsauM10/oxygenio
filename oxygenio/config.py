@@ -1,12 +1,7 @@
 import json
 import os
-from pathlib import Path
 
-from oxygenio.helpers import ModeType, read_file
-
-ROOT_PATH = str(Path(__file__).parent.parent)
-CONFIG_FILENAME = 'config.json'
-
+from oxygenio.helpers import CONFIG_FILENAME, ROOT_PATH, ModeType, read_file
 
 class ConfigLoader:
     def __init__(self, build: bool = False) -> None:

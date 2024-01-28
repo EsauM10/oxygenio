@@ -1,8 +1,16 @@
+import os
+from pathlib import Path
 from typing import Literal
 from flask import Flask, render_template
 
 BrowserType = Literal['chrome']
 ModeType = Literal['dev', 'build']
+
+CONFIG_FILENAME = 'config.json'
+BASEDIR  = str(Path(__file__).parent)
+DATA_DIR = os.path.join(BASEDIR, 'data')
+ROOT_PATH = str(Path(__file__).parent.parent)
+
 
 def _root():
     return render_template('index.html')

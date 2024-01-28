@@ -1,13 +1,8 @@
 import argparse
 import json
 import os
-from pathlib import Path
-from oxygenio.config import CONFIG_FILENAME, ConfigLoader
 
-from oxygenio.helpers import create_file, read_file
-
-BASEDIR  = str(Path(__file__).parent)
-DATA_DIR = os.path.join(BASEDIR, 'data')
+from oxygenio.helpers import CONFIG_FILENAME, DATA_DIR, create_file, read_file
 
 
 global_parser = argparse.ArgumentParser(prog='oxygen')
