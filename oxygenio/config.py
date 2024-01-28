@@ -7,9 +7,10 @@ from oxygenio.helpers import ModeType, read_file
 ROOT_PATH = str(Path(__file__).parent.parent)
 
 class ConfigLoader:
-    def __init__(self, build: bool) -> None:
+    def __init__(self, build: bool = False) -> None:
         self.__mode: ModeType = 'build' if(build) else 'dev'
         self.file = 'config.json'
+        self.dev_command = ''
         self.build_command = ''
         self.app_url = ''
         self.dist_folder = ''
