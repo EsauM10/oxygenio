@@ -20,7 +20,7 @@ class Oxygenio:
             return self.config.app_url
         return f'http://{host}:{port}'
 
-    def run(self, host: str = 'localhost', port: int = 8000, browser: BrowserType = 'chrome'):
+    def run(self, host: str = 'localhost', port: int = 15999, browser: BrowserType = 'chrome'):
         enable = self.config.is_dev_mode
 
         if(browser == 'chrome' and not self.config.is_dev_mode):
