@@ -21,14 +21,6 @@ class Oxygenio:
             return self.config.app_url
         return f'http://{host}:{port}'
 
-    def _get_assets_folders(self) -> tuple[str, str]:
-        if(self.config.is_dev_mode):
-            return 'templates', 'static'
-        
-        template_folder = os.path.join(ROOT_PATH, self.config.dist_folder)
-        static_folder = os.path.join(template_folder, 'assets')
-        return template_folder, static_folder
-
     def run(self, host: str = 'localhost', port: int = 8000, browser: BrowserType = 'chrome'):
         enable = self.config.is_dev_mode
 
