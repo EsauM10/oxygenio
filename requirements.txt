@@ -1,1 +1,4 @@
 flask-socketio
+gevent
+gevent-websocket
+pyinstaller==6.2.0
