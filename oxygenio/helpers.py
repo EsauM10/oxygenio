@@ -15,7 +15,7 @@ ROOT_PATH = str(Path(__file__).parent.parent)
 def _root():
     return render_template('index.html')
 
-def create_app(app_name: str, template_folder: str, static_folder: str) -> Flask:
+def create_app(app_name: str, template_folder: str = 'templates', static_folder: str = 'static') -> Flask:
     app = Flask(app_name, template_folder=template_folder, static_folder=static_folder)
     app.add_url_rule('/', view_func=_root)
     return app
