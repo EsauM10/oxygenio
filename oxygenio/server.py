@@ -1,11 +1,10 @@
-import os
 from typing import Any, Callable
 
 from flask_socketio import SocketIO
 
 from oxygenio.browsers import Chrome
 from oxygenio.config import ConfigLoader
-from oxygenio.helpers import ROOT_PATH, BrowserType, create_app
+from oxygenio.helpers import BrowserType, create_app
 
 
 class Oxygenio:
