@@ -9,8 +9,8 @@ from oxygenio.helpers import ROOT_PATH, BrowserType, create_app
 
 
 class Oxygenio:
-    def __init__(self, build: bool = False) -> None:
-        self.config = ConfigLoader(build)
+    def __init__(self) -> None:
+        self.config = ConfigLoader()
         self.__socketio = SocketIO()
     
     def on(self, func: Callable[..., Any]):
@@ -35,6 +35,6 @@ class Oxygenio:
         if(browser == 'chrome' and not self.config.is_dev_mode):
             Chrome().run(url=self._get_app_url(host, port))
 
-        app = create_app(__name__, *self._get_assets_folders())
+        app = create_app(__name__)
         self.__socketio.init_app(app)
         self.__socketio.run(app, host=host, port=port, debug=enable, use_reloader=enable, log_output=False)

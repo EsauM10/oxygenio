@@ -3,9 +3,14 @@ import os
 
 from oxygenio.helpers import CONFIG_FILENAME, ROOT_PATH, ModeType, read_file
 
+paths = [
+    os.path.join(os.getcwd(), CONFIG_FILENAME),
+    os.path.join(ROOT_PATH, CONFIG_FILENAME)
+]
+
 class ConfigLoader:
-    def __init__(self, build: bool = False) -> None:
-        self.__mode: ModeType = 'build' if(build) else 'dev'
+    def __init__(self) -> None:
+        self.__mode: ModeType = 'dev'
         self.file = CONFIG_FILENAME
         self.dev_command = ''
         self.build_command = ''
@@ -23,11 +28,16 @@ class ConfigLoader:
         return self.__mode == 'dev'
     
     def __load(self):
-        if(not self.is_dev_mode):
-            self.file = os.path.join(ROOT_PATH, CONFIG_FILENAME)
+        for path in paths:
+            if(os.path.exists(path)):
+                self.file = path
+                break
+        else:
+            raise FileNotFoundError(f'Oxygen {CONFIG_FILENAME} not found. Run: oxygen create')
         
         data = json.loads(read_file(self.file))
 
+        self.__mode = 'build' if(data['mode'] == 'build') else 'dev'
         self.app_url = str(data['appURL'])
         self.dev_command = str(data['devCommand'])
         self.build_command = str(data['buildCommand'])
