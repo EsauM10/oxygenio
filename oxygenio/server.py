@@ -26,6 +26,6 @@ class Oxygenio:
         if(browser == 'chrome' and not self.config.is_dev_mode):
             Chrome().run(url=self._get_app_url(host, port))
 
-        app = create_app(__name__)
+        app = create_app('__main__')
         self.__socketio.init_app(app)
         self.__socketio.run(app, host=host, port=port, debug=enable, use_reloader=enable, log_output=False)
