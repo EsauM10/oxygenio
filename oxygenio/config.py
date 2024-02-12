@@ -21,7 +21,7 @@ class ConfigLoader:
     
     @property
     def dist_path(self) -> str:
-        return os.path.join(self.frontend_app, self.dist_folder)
+        return os.path.join(os.getcwd(), self.frontend_app, self.dist_folder)
     
     @property
     def is_dev_mode(self) -> bool:
