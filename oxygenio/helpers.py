@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import subprocess
 from typing import Literal
 from flask import Flask, render_template
 
@@ -27,3 +28,6 @@ def create_file(filename: str, data: str):
 def read_file(filename: str) -> str:
     with open(filename, mode='r') as file:
         return file.read()
+
+def run_command(commands: list[str]):
+    subprocess.call(commands, shell=True)
