@@ -27,6 +27,17 @@ class ConfigLoader:
     def is_dev_mode(self) -> bool:
         return self.__mode == 'dev'
     
+    @property
+    def to_dict(self) -> dict[str, str]:
+        return {
+            'mode': self.__mode,
+            'appURL': self.app_url,
+            'devCommand': self.dev_command,
+            'buildCommand': self.build_command,
+            'frontendApp': self.frontend_app,
+            'distFolder': self.dist_folder
+        }
+    
     def __load(self):
         for path in paths:
             if(os.path.exists(path)):
