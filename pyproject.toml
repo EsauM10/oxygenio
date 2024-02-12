@@ -15,7 +15,8 @@ dependencies = [
   "flask-socketio",
   "gevent",
   "gevent-websocket",
-  "pyinstaller==6.2.0"
+  "pyinstaller==6.2.0",
+  "beautifulsoup4>=4.12.3"
 ]
 keywords = ["gui", "eel", "electron", "typescript", "javascript", "react"]
 license = {text = "MIT License"}
