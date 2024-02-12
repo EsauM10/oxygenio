@@ -1,17 +1,20 @@
 import argparse
 import json
 import os
+from oxygenio.build import ViteBuilder
+from oxygenio.config import ConfigLoader
 
-from oxygenio.helpers import CONFIG_FILENAME, DATA_DIR, create_file, read_file
-
+from oxygenio.helpers import (
+    CONFIG_FILENAME, DATA_DIR, 
+    create_file, read_file
+)
 
 global_parser = argparse.ArgumentParser(prog='oxygen')
 subparsers    = global_parser.add_subparsers(title='commands')
 
 def build():
-    filename = os.path.join(DATA_DIR, 'docs.txt')
-    with open(filename, mode='r') as file:
-        print(file.read())
+    config = ConfigLoader()
+    ViteBuilder(config).build()
 
 def create():
     data = {
