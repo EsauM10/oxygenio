@@ -1,9 +1,9 @@
 import argparse
 import json
 import os
+
 from oxygenio.build import ViteBuilder
 from oxygenio.config import ConfigLoader
-
 from oxygenio.helpers import (
     CONFIG_FILENAME, DATA_DIR, 
     create_file, read_file
@@ -23,7 +23,8 @@ def create():
         'devCommand': 'npm --prefix=web run dev',
         'buildCommand': 'npm --prefix=web run build',
         'frontendApp': 'web',
-        'distFolder': 'dist'
+        'distFolder': 'dist',
+        'staticFolder': 'assets'
     }
     print(f'Creating {CONFIG_FILENAME} 📂...')
     create_file(CONFIG_FILENAME, json.dumps(data, indent=4))

@@ -15,8 +15,9 @@ class ConfigLoader:
         self.dev_command = ''
         self.build_command = ''
         self.app_url = ''
-        self.dist_folder = ''
         self.frontend_app = ''
+        self.dist_folder = ''
+        self.static_folder = ''
         self.__load()
     
     @property
@@ -35,7 +36,8 @@ class ConfigLoader:
             'devCommand': self.dev_command,
             'buildCommand': self.build_command,
             'frontendApp': self.frontend_app,
-            'distFolder': self.dist_folder
+            'distFolder': self.dist_folder,
+            'staticFolder': self.static_folder
         }
     
     def __load(self):
@@ -52,5 +54,6 @@ class ConfigLoader:
         self.app_url = str(data['appURL'])
         self.dev_command = str(data['devCommand'])
         self.build_command = str(data['buildCommand'])
-        self.dist_folder = str(data['distFolder'])
         self.frontend_app = str(data['frontendApp'])
+        self.dist_folder = str(data['distFolder'])
+        self.static_folder = str(data['staticFolder'])
