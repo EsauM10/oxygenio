@@ -45,7 +45,7 @@ class ViteBuilder:
         soup = BeautifulSoup(read_file(html_path), 'html.parser')
         head_tag = soup.find('head')
         href = ['{{', f'url_for("static", filename="{FAVICON}")', '}}']
-        link_tag = soup.new_tag('link', rel='favicon', href=' '.join(href))
+        link_tag = soup.new_tag('link', rel='shortcut icon', href=' '.join(href))
         head_tag.append(link_tag) #type: ignore
         create_file(html_path, soup.prettify())
 
