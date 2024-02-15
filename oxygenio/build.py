@@ -10,6 +10,7 @@ from oxygenio.helpers import (
     CONFIG_FILENAME,
     DATA_DIR,
     FAVICON,
+    INDEX_HTML,
     create_file,
     read_file, 
     run_command
@@ -59,7 +60,7 @@ class ViteBuilder:
             static_temp_folder = os.path.join(tempdir.name, 'static')
             templates_temp_folder = os.path.join(tempdir.name, 'templates')
             favicon_path = os.path.join(static_temp_folder, FAVICON)
-            index_html_path = os.path.join(templates_temp_folder, 'index.html')
+            index_html_path = os.path.join(templates_temp_folder, INDEX_HTML)
 
             shutil.copytree(src=assets_folder, dst=static_temp_folder)
             self.create_templates_folder(templates_temp_folder)
