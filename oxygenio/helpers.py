@@ -7,7 +7,7 @@ from flask import Flask, render_template
 BrowserType = Literal['chrome']
 ModeType = Literal['dev', 'build']
 
-CONFIG_FILENAME = 'config.json'
+CONFIG_FILENAME = 'oxygen.json'
 FAVICON  = 'favicon.ico'
 BASEDIR  = str(Path(__file__).parent)
 DATA_DIR = os.path.join(BASEDIR, 'data')

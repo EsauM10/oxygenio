@@ -46,7 +46,7 @@ class ConfigLoader:
                 self.file = path
                 break
         else:
-            raise FileNotFoundError(f'Oxygen {CONFIG_FILENAME} not found. Run: oxygen create')
+            raise FileNotFoundError(f'Config file {CONFIG_FILENAME} not found, run: oxygen create')
         
         data = json.loads(read_file(self.file))
 
