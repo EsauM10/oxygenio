@@ -11,6 +11,7 @@ class Oxygenio:
     def __init__(self) -> None:
         self.config = ConfigLoader()
         self.__socketio = SocketIO()
+        self._register_default_events()
     
     def on(self, func: Callable[..., Any]):
        self.__socketio.on_event(func.__name__, func)
@@ -19,6 +20,10 @@ class Oxygenio:
         if(self.config.is_dev_mode):
             return self.config.app_url
         return f'http://{host}:{port}'
+
+    def _register_default_events(self):
+        if(not self.config.is_dev_mode):
+            self.__socketio.on_event('onclose', self.__socketio.stop) # type: ignore
 
     def run(self, host: str = 'localhost', port: int = 15999, browser: BrowserType = 'chrome'):
         enable = self.config.is_dev_mode
