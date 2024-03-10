@@ -1,7 +1,10 @@
 from abc import ABC, abstractmethod
 from subprocess import Popen, PIPE
+from typing import Literal
 
 from oxygenio.helpers import run_command
+
+BrowserName = Literal['chrome', 'edge']
 
 class Browser(ABC):
     @abstractmethod
