@@ -4,7 +4,7 @@ import subprocess
 from typing import Literal
 from flask import Flask, render_template
 
-BrowserType = Literal['chrome']
+BrowserType = Literal['chrome', 'edge']
 ModeType = Literal['dev', 'build']
 
 CONFIG_FILENAME = 'oxygen.json'

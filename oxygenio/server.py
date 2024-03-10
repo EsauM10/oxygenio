@@ -1,11 +1,15 @@
-from typing import Any, Callable
+from typing import Any, Callable, Type
 
 from flask_socketio import SocketIO
 
-from oxygenio.browsers import Chrome
+from oxygenio.browsers import Browser, Chrome, Edge
 from oxygenio.config import ConfigLoader
 from oxygenio.helpers import BrowserType, create_app
 
+browsers: dict[BrowserType, Type[Browser]] = {
+    'chrome': Chrome,
+    'edge': Edge
+}
 
 class Oxygenio:
     def __init__(self) -> None:
@@ -29,8 +33,8 @@ class Oxygenio:
         enable = self.config.is_dev_mode
 
         app_url = self._get_app_url(host, port)
-        if(browser == 'chrome' and not self.config.is_dev_mode):
-            Chrome().run(app_url)
+        if(not self.config.is_dev_mode):
+            browsers[browser]().run(url=app_url)
 
         app = create_app('__main__', static_folder=self.config.static_folder)
         self.__socketio.init_app(app, cors_allowed_origins=app_url)
