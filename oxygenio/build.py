@@ -25,20 +25,32 @@ class ViteBuilder:
         data['mode'] = 'build'
         create_file(filename, json.dumps(data, indent=4))
 
+    def create_static_folder(self, static_path: str):
+        vite_assets_folder = os.path.join(self.config.dist_path, 'assets')
+        shutil.copytree(src=vite_assets_folder, dst=static_path)
+        
+        for name in os.listdir(self.config.dist_path):
+            if(name in [INDEX_HTML, 'assets']):
+                continue
+
+            source = os.path.join(self.config.dist_path, name)
+            destination = os.path.join(static_path, name)
+            if(os.path.isfile(source)):
+                shutil.copyfile(source, destination)
+            else:
+                shutil.copytree(source, destination)       
+
+
     def create_templates_folder(self, templates_path: str):
         os.mkdir(templates_path)
-        for filename in os.listdir(self.config.dist_path):
-            file = os.path.join(self.config.dist_path, filename)
-            if(os.path.isfile(file)):
-                destination = os.path.join(templates_path, filename)
-                shutil.copyfile(file, destination)
+        index_html = os.path.join(self.config.dist_path, INDEX_HTML)
+        destination = os.path.join(templates_path, INDEX_HTML)
+        shutil.copyfile(index_html, destination)
 
     def create_favicon(self, favicon_path: str):
         vite_favicon = os.path.join(self.config.dist_path, FAVICON)
         
-        if(os.path.exists(vite_favicon)):
-            shutil.copyfile(vite_favicon, favicon_path)
-        else:
+        if(not os.path.exists(vite_favicon)):
             oxygen_favicon = os.path.join(DATA_DIR, FAVICON)
             shutil.copyfile(oxygen_favicon, favicon_path)
     
@@ -62,7 +74,7 @@ class ViteBuilder:
             favicon_path = os.path.join(static_temp_folder, FAVICON)
             index_html_path = os.path.join(templates_temp_folder, INDEX_HTML)
 
-            shutil.copytree(src=assets_folder, dst=static_temp_folder)
+            self.create_static_folder(static_temp_folder)
             self.create_templates_folder(templates_temp_folder)
             self.create_config_file(config_file)
             self.create_favicon(favicon_path)
