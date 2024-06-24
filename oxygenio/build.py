@@ -67,7 +67,6 @@ class ViteBuilder:
         tempdir = tempfile.TemporaryDirectory()
         
         try:
-            assets_folder = os.path.join(self.config.dist_path, self.config.static_folder)
             config_file = os.path.join(tempdir.name, CONFIG_FILENAME)
             static_temp_folder = os.path.join(tempdir.name, 'static')
             templates_temp_folder = os.path.join(tempdir.name, 'templates')
