@@ -20,6 +20,9 @@ class Oxygenio:
     def on(self, func: Callable[..., Any]):
        self.__socketio.on_event(func.__name__, func)
     
+    def emit(self, event: str, *data: Any):
+        self.__socketio.emit(event, *data)
+    
     def _get_app_url(self, host: str, port: int) -> str:
         if(self.config.is_dev_mode):
             return self.config.app_url
