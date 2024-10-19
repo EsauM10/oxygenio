@@ -16,6 +16,11 @@ from oxygenio.helpers import (
     run_command
 )
 
+def install_node_dependencies(config: ConfigLoader):
+    os.chdir(config.fronted_app_path)
+    run_command(['npm', 'i'])
+    os.chdir('..')
+
 class ViteBuilder:
     def __init__(self, config: ConfigLoader) -> None:
         self.config = config
@@ -62,7 +67,14 @@ class ViteBuilder:
         head_tag.append(link_tag) #type: ignore
         create_file(html_path, soup.prettify())
 
+    def node_modules_exists(self) -> bool:
+        node_modules_path = os.path.join(self.config.fronted_app_path, 'node_modules')
+        return os.path.exists(node_modules_path)
+
     def build(self):
+        if(not self.node_modules_exists()):
+            install_node_dependencies(self.config)
+
         run_command(self.config.build_command.split(' '))
         tempdir = tempfile.TemporaryDirectory()
         

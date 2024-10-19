@@ -15,14 +15,18 @@ class ConfigLoader:
         self.dev_command = ''
         self.build_command = ''
         self.app_url = ''
-        self.frontend_app = ''
-        self.dist_folder = ''
+        self.__frontend_app = ''
+        self.__dist_folder = ''
         self.static_folder = ''
         self.__load()
     
     @property
     def dist_path(self) -> str:
-        return os.path.join(os.getcwd(), self.frontend_app, self.dist_folder)
+        return os.path.join(self.fronted_app_path, self.__dist_folder)
+    
+    @property
+    def fronted_app_path(self) -> str:
+        return os.path.join(os.getcwd(), self.__frontend_app)
     
     @property
     def is_dev_mode(self) -> bool:
@@ -35,8 +39,8 @@ class ConfigLoader:
             'appURL': self.app_url,
             'devCommand': self.dev_command,
             'buildCommand': self.build_command,
-            'frontendApp': self.frontend_app,
-            'distFolder': self.dist_folder,
+            'frontendApp': self.__frontend_app,
+            'distFolder': self.__dist_folder,
             'staticFolder': self.static_folder
         }
     
@@ -54,6 +58,6 @@ class ConfigLoader:
         self.app_url = str(data['appURL'])
         self.dev_command = str(data['devCommand'])
         self.build_command = str(data['buildCommand'])
-        self.frontend_app = str(data['frontendApp'])
-        self.dist_folder = str(data['distFolder'])
+        self.__frontend_app = str(data['frontendApp'])
+        self.__dist_folder = str(data['distFolder'])
         self.static_folder = str(data['staticFolder'])
