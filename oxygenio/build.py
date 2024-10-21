@@ -57,7 +57,7 @@ class ViteBuilder:
         
         if(not os.path.exists(vite_favicon)):
             oxygen_favicon = os.path.join(DATA_DIR, FAVICON)
-            shutil.copyfile(oxygen_favicon, self.config.dist_path)
+            shutil.copyfile(oxygen_favicon, vite_favicon)
     
     def add_favicon_to_html(self, html_path: str):
         soup = BeautifulSoup(read_file(html_path), 'html.parser')
