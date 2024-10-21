@@ -17,7 +17,7 @@ from oxygenio.helpers import (
 )
 
 def install_node_dependencies(config: ConfigLoader):
-    os.chdir(config.fronted_app_path)
+    os.chdir(config.frontend_app_path)
     run_command(['npm', 'i'])
     os.chdir('..')
 
@@ -32,19 +32,19 @@ class ViteBuilder:
 
     def create_static_folder(self, static_path: str):
         vite_assets_folder = os.path.join(self.config.dist_path, 'assets')
-        shutil.copytree(src=vite_assets_folder, dst=static_path)
-        
+        shutil.copytree(src=vite_assets_folder, dst=static_path)     
+
+    def get_public_files(self) -> list[str]:
+        files = []
+
         for name in os.listdir(self.config.dist_path):
-            if(name in [INDEX_HTML, 'assets']):
+            if(name in ['assets', INDEX_HTML]):
                 continue
 
             source = os.path.join(self.config.dist_path, name)
-            destination = os.path.join(static_path, name)
-            if(os.path.isfile(source)):
-                shutil.copyfile(source, destination)
-            else:
-                shutil.copytree(source, destination)       
-
+            destination = '.' if(os.path.isfile(source)) else name
+            files.append(f'--add-data={source}:{destination}')
+        return files
 
     def create_templates_folder(self, templates_path: str):
         os.mkdir(templates_path)
@@ -52,23 +52,22 @@ class ViteBuilder:
         destination = os.path.join(templates_path, INDEX_HTML)
         shutil.copyfile(index_html, destination)
 
-    def create_favicon(self, favicon_path: str):
+    def create_favicon(self):
         vite_favicon = os.path.join(self.config.dist_path, FAVICON)
         
         if(not os.path.exists(vite_favicon)):
             oxygen_favicon = os.path.join(DATA_DIR, FAVICON)
-            shutil.copyfile(oxygen_favicon, favicon_path)
+            shutil.copyfile(oxygen_favicon, self.config.dist_path)
     
     def add_favicon_to_html(self, html_path: str):
         soup = BeautifulSoup(read_file(html_path), 'html.parser')
         head_tag = soup.find('head')
-        href = ['{{', f'url_for("static", filename="{FAVICON}")', '}}']
-        link_tag = soup.new_tag('link', rel='shortcut icon', href=' '.join(href))
+        link_tag = soup.new_tag('link', rel='shortcut icon', href=f'{FAVICON}')
         head_tag.append(link_tag) #type: ignore
         create_file(html_path, soup.prettify())
 
     def node_modules_exists(self) -> bool:
-        node_modules_path = os.path.join(self.config.fronted_app_path, 'node_modules')
+        node_modules_path = os.path.join(self.config.frontend_app_path, 'node_modules')
         return os.path.exists(node_modules_path)
 
     def build(self):
@@ -80,19 +79,20 @@ class ViteBuilder:
         
         try:
             config_file = os.path.join(tempdir.name, CONFIG_FILENAME)
+            favicon_path = os.path.join(self.config.dist_path, FAVICON)
             static_temp_folder = os.path.join(tempdir.name, 'static')
             templates_temp_folder = os.path.join(tempdir.name, 'templates')
-            favicon_path = os.path.join(static_temp_folder, FAVICON)
             index_html_path = os.path.join(templates_temp_folder, INDEX_HTML)
 
             self.create_static_folder(static_temp_folder)
             self.create_templates_folder(templates_temp_folder)
             self.create_config_file(config_file)
-            self.create_favicon(favicon_path)
+            self.create_favicon()
             self.add_favicon_to_html(index_html_path)
 
             run_command([
                 'pyinstaller', '--noconfirm', '--onefile', '--windowed', '--clean',
+                *self.get_public_files(),
                 f'--add-data={config_file}:.',
                 f'--add-data={static_temp_folder}:{self.config.static_folder}',
                 f'--add-data={templates_temp_folder}:templates',

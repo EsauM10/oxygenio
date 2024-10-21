@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import subprocess
 from typing import Literal
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 
 ModeType = Literal['dev', 'build']
 
@@ -20,6 +20,10 @@ def _root():
 def create_app(app_name: str, template_folder: str = 'templates', static_folder: str = 'static') -> Flask:
     app = Flask(app_name, template_folder=template_folder, static_folder=static_folder)
     app.add_url_rule('/', view_func=_root)
+    app.add_url_rule(
+        '/<path:path>',
+        view_func=lambda path: send_from_directory('.', path)
+    )
     return app
 
 def create_file(filename: str, data: str):

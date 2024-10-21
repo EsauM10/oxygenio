@@ -22,10 +22,10 @@ class ConfigLoader:
     
     @property
     def dist_path(self) -> str:
-        return os.path.join(self.fronted_app_path, self.__dist_folder)
+        return os.path.join(self.frontend_app_path, self.__dist_folder)
     
     @property
-    def fronted_app_path(self) -> str:
+    def frontend_app_path(self) -> str:
         return os.path.join(os.getcwd(), self.__frontend_app)
     
     @property
