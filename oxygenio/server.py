@@ -1,3 +1,6 @@
+from gevent import monkey
+monkey.patch_all()
+
 from typing import Any, Callable, Type
 
 from flask_socketio import SocketIO
@@ -14,9 +17,13 @@ browsers: dict[BrowserName, Type[Browser]] = {
 class Oxygenio:
     def __init__(self) -> None:
         self.config = ConfigLoader()
-        self.__socketio = SocketIO()
+        self.__socketio = SocketIO(async_mode='gevent')
         self._register_default_events()
     
+    @property
+    def websocket(self):
+        return self.__socketio
+
     def on(self, func: Callable[..., Any]):
        self.__socketio.on_event(func.__name__, func)
     
@@ -41,4 +48,11 @@ class Oxygenio:
 
         app = create_app('__main__', static_folder=self.config.static_folder)
         self.__socketio.init_app(app, cors_allowed_origins=app_url)
-        self.__socketio.run(app, host=host, port=port, debug=enable, use_reloader=enable, log_output=False)
+        self.__socketio.run(
+            app, 
+            host=host, 
+            port=port, 
+            debug=enable, 
+            use_reloader=enable, 
+            log_output=False
+        )
