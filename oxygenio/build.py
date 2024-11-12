@@ -52,6 +52,11 @@ class ViteBuilder:
         destination = os.path.join(templates_path, INDEX_HTML)
         shutil.copyfile(index_html, destination)
 
+    def create_oxygen_js(self, ):
+        oxygen_js = os.path.join(DATA_DIR, 'oxygen.js')
+        destination = os.path.join(self.config.dist_path, 'assets', 'oxygen.js')
+        shutil.copyfile(oxygen_js, destination)
+
     def create_favicon(self):
         vite_favicon = os.path.join(self.config.dist_path, FAVICON)
         
@@ -59,10 +64,12 @@ class ViteBuilder:
             oxygen_favicon = os.path.join(DATA_DIR, FAVICON)
             shutil.copyfile(oxygen_favicon, vite_favicon)
     
-    def add_favicon_to_html(self, html_path: str):
+    def add_tags_to_html(self, html_path: str):
         soup = BeautifulSoup(read_file(html_path), 'html.parser')
         head_tag = soup.find('head')
         link_tag = soup.new_tag('link', rel='shortcut icon', href=f'{FAVICON}')
+        script_tag = soup.new_tag('script', type='module', crossorigin=None, src='/assets/oxygen.js')
+        head_tag.append(script_tag) # type: ignore
         head_tag.append(link_tag) #type: ignore
         create_file(html_path, soup.prettify())
 
@@ -84,11 +91,12 @@ class ViteBuilder:
             templates_temp_folder = os.path.join(tempdir.name, 'templates')
             index_html_path = os.path.join(templates_temp_folder, INDEX_HTML)
 
+            self.create_oxygen_js()
             self.create_static_folder(static_temp_folder)
             self.create_templates_folder(templates_temp_folder)
             self.create_config_file(config_file)
             self.create_favicon()
-            self.add_favicon_to_html(index_html_path)
+            self.add_tags_to_html(index_html_path)
 
             run_command([
                 'pyinstaller', '--noconfirm', '--onefile', '--windowed', '--clean',
