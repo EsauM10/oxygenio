@@ -16,7 +16,7 @@ def build():
     config = ConfigLoader()
     ViteBuilder(config).build()
 
-def create():
+def init():
     data = {
         'mode': 'dev',
         'appURL': 'http://localhost:5173',
@@ -37,7 +37,7 @@ def create():
 
 def main():
     subparsers.add_parser('build', help='builds the executable file').set_defaults(func=build)
-    subparsers.add_parser('create', help='create all the necessaries files').set_defaults(func=create)
+    subparsers.add_parser('init', help='initialize a new oxygen project').set_defaults(func=init)
     
     args = global_parser.parse_args()
     args.func()
