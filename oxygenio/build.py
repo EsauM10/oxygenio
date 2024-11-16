@@ -76,6 +76,9 @@ class ViteBuilder:
         head_tag = soup.find('head')
         link_tag = soup.new_tag('link', rel='shortcut icon', href=f'{FAVICON}')
         script_tag = soup.new_tag('script', type='module', crossorigin=None, src='/assets/oxygen.js')
+
+        title = self.config.window.title
+        head_tag.find('title').string.replace_with(title) # type: ignore
         head_tag.append(script_tag) # type: ignore
         head_tag.append(link_tag) #type: ignore
         create_file(html_path, soup.prettify())
