@@ -9,15 +9,17 @@ class WindowConfig:
     height: int
     resizable: bool
     maximize: bool
+    console: bool
 
     @staticmethod
-    def from_dict(window_data: dict[str, Any]):
-        data = window_data.get('window') or {}
+    def from_dict(payload: dict[str, Any]):
+        data = payload.get('window') or {}
     
         return WindowConfig(
             title=data.get('title') or 'Oxygen App',
             width=int(data.get('width') or 600),
             height=int(data.get('height') or 400),
             resizable=bool(data.get('resizable')),
-            maximize=bool(data.get('maximize'))
+            maximize=bool(data.get('maximize')),
+            console=bool(data.get('console'))
         )

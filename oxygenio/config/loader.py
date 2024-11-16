@@ -44,6 +44,10 @@ class ConfigLoader:
         return self.__mode == 'dev'
     
     @property
+    def is_windowed(self) -> bool:
+        return self.window.console == False
+
+    @property
     def to_dict(self) -> dict[str, str]:
         return {
             'mode': self.__mode,

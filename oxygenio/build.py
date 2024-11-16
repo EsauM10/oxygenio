@@ -34,6 +34,13 @@ class ViteBuilder:
         vite_assets_folder = os.path.join(self.config.dist_path, 'assets')
         shutil.copytree(src=vite_assets_folder, dst=static_path)     
 
+    def get_pyinstaller_flags(self) -> list[str]:
+        flags = ['--noconfirm', '--onefile', '--clean']
+
+        if(self.config.is_windowed):
+            flags.append('--windowed')
+        return flags
+
     def get_public_files(self) -> list[str]:
         files = []
 
@@ -99,7 +106,8 @@ class ViteBuilder:
             self.add_tags_to_html(index_html_path)
 
             run_command([
-                'pyinstaller', '--noconfirm', '--onefile', '--windowed', '--clean',
+                'pyinstaller',
+                *self.get_pyinstaller_flags(),
                 *self.get_public_files(),
                 f'--add-data={config_file}:.',
                 f'--add-data={static_temp_folder}:{self.config.static_folder}',
