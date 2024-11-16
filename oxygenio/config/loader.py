@@ -24,6 +24,10 @@ class ConfigLoader:
         self.window = WindowConfig.from_dict(data)
     
     @property
+    def app_url(self) -> str:
+        return self.build.app_url
+    
+    @property
     def build_command(self) -> str:
         return self.build.build_command
 
