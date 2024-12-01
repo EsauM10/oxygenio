@@ -55,6 +55,15 @@ class ConfigLoader:
     def to_dict(self) -> dict[str, str]:
         return self.build.to_dict
     
+    @property
+    def labels(self) -> dict[str, str]:
+        return {
+            'OXYGEN_MAXIMIZE': str(self.window.maximize).lower(),
+            'OXYGEN_RESIZABLE': str(self.window.resizable).lower(),
+            'OXYGEN_WIDTH': str(self.window.width),
+            'OXYGEN_HEIGHT': str(self.window.height)
+        }
+
     def __parse_config(self) -> dict[str, Any]:
         for path in paths:
             if(os.path.exists(path)):

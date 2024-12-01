@@ -36,3 +36,13 @@ def read_file(filename: str) -> str:
 
 def run_command(commands: list[str]):
     subprocess.call(commands, shell=True)
+
+def install_node_dependencies(directory: str):
+    os.chdir(directory)
+    run_command(['npm', 'i'])
+    os.chdir('..')
+
+def replace_labels(text: str, labels: dict[str, str]) -> str:
+    for label, value in labels.items():
+        text = text.replace(label, value)
+    return text

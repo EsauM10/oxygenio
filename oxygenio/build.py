@@ -12,14 +12,12 @@ from oxygenio.helpers import (
     FAVICON,
     INDEX_HTML,
     create_file,
-    read_file, 
+    install_node_dependencies,
+    read_file,
+    replace_labels, 
     run_command
 )
 
-def install_node_dependencies(config: ConfigLoader):
-    os.chdir(config.frontend_app_path)
-    run_command(['npm', 'i'])
-    os.chdir('..')
 
 class ViteBuilder:
     def __init__(self, config: ConfigLoader) -> None:
@@ -32,7 +30,8 @@ class ViteBuilder:
 
     def create_static_folder(self, static_path: str):
         vite_assets_folder = os.path.join(self.config.dist_path, 'assets')
-        shutil.copytree(src=vite_assets_folder, dst=static_path)     
+        shutil.copytree(src=vite_assets_folder, dst=static_path)
+        self.create_oxygen_js(static_path)
 
     def get_pyinstaller_flags(self) -> list[str]:
         flags = ['--noconfirm', '--onefile', '--clean']
@@ -59,10 +58,13 @@ class ViteBuilder:
         destination = os.path.join(templates_path, INDEX_HTML)
         shutil.copyfile(index_html, destination)
 
-    def create_oxygen_js(self, ):
-        oxygen_js = os.path.join(DATA_DIR, 'oxygen.js')
-        destination = os.path.join(self.config.dist_path, 'assets', 'oxygen.js')
-        shutil.copyfile(oxygen_js, destination)
+    def create_oxygen_js(self, static_path: str):
+        oxygen_js_path = os.path.join(DATA_DIR, 'oxygen.js')
+        destination = os.path.join(static_path, 'oxygen.js')
+
+        oxygen_file = read_file(oxygen_js_path)
+        oxygen_file = replace_labels(oxygen_file, self.config.labels)
+        create_file(destination, oxygen_file)
 
     def create_favicon(self):
         vite_favicon = os.path.join(self.config.dist_path, FAVICON)
@@ -89,7 +91,7 @@ class ViteBuilder:
 
     def build(self):
         if(not self.node_modules_exists()):
-            install_node_dependencies(self.config)
+            install_node_dependencies(self.config.frontend_app_path)
 
         run_command(self.config.build_command.split(' '))
         tempdir = tempfile.TemporaryDirectory()
@@ -101,7 +103,6 @@ class ViteBuilder:
             templates_temp_folder = os.path.join(tempdir.name, 'templates')
             index_html_path = os.path.join(templates_temp_folder, INDEX_HTML)
 
-            self.create_oxygen_js()
             self.create_static_folder(static_temp_folder)
             self.create_templates_folder(templates_temp_folder)
             self.create_config_file(config_file)
