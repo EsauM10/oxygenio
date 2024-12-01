@@ -12,6 +12,7 @@ const maximizedDimensions = OXYGEN_MAXIMIZE && OXYGEN_RESIZABLE;
 
 function setDimensions() {
     if(fixedDimensions) {
+        window.resizeTo(OXYGEN_WIDTH, OXYGEN_HEIGHT);
         window.addEventListener('resize', function() {
             window.resizeTo(OXYGEN_WIDTH, OXYGEN_HEIGHT);
         });
