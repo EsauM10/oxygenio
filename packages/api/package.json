@@ -1,5 +1,5 @@
 {
-  "name": "oxygen-api",
+  "name": "oxygenio",
   "version": "1.0.0",
   "description": "Oxygen API definitions",
   "main": "./dist/index.js",
