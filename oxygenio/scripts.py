@@ -24,7 +24,15 @@ def init():
         'buildCommand': 'npm --prefix=web run build',
         'frontendApp': 'web',
         'distFolder': 'dist',
-        'staticFolder': 'assets'
+        'staticFolder': 'assets',
+        'window': {
+            'title': 'Oxygen App',
+            'width': 600,
+            'height': 400,
+            'maximize': False,
+            'resizable': True,
+            'console': False
+        }
     }
     print(f'Creating {CONFIG_FILENAME} 📂...')
     create_file(CONFIG_FILENAME, json.dumps(data, indent=4))
