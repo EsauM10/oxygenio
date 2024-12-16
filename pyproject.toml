@@ -31,7 +31,3 @@ oxygen = "oxygenio.scripts:main"
 
 [project.urls]
 Homepage = "https://github.com/EsauM10/oxygenio"
-
-[tool.setuptools.packages.find]
-include = ["packages*"]
-namespaces = false
