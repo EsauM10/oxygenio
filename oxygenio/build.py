@@ -77,13 +77,13 @@ class ViteBuilder:
         soup = BeautifulSoup(read_file(html_path), 'html.parser')
         head_tag = soup.find('head')
         link_tag = soup.new_tag('link', rel='shortcut icon', href=f'{FAVICON}')
-        script_tag = soup.new_tag('script', type='module', crossorigin=None, src='/assets/oxygen.js')
+        script_tag = soup.new_tag('script', type='module', crossorigin=None, src='/assets/oxygen.js') # type: ignore
 
         title = self.config.window.title
         head_tag.find('title').string.replace_with(title) # type: ignore
         head_tag.append(script_tag) # type: ignore
         head_tag.append(link_tag) #type: ignore
-        create_file(html_path, soup.prettify())
+        create_file(html_path, soup.prettify()) # type: ignore
 
     def node_modules_exists(self) -> bool:
         node_modules_path = os.path.join(self.config.frontend_app_path, 'node_modules')
@@ -95,7 +95,8 @@ class ViteBuilder:
 
         run_command(self.config.build_command.split(' '))
         tempdir = tempfile.TemporaryDirectory()
-        
+        app_name = self.config.window.title
+
         try:
             config_file = os.path.join(tempdir.name, CONFIG_FILENAME)
             favicon_path = os.path.join(self.config.dist_path, FAVICON)
@@ -117,6 +118,7 @@ class ViteBuilder:
                 f'--add-data={static_temp_folder}:{self.config.static_folder}',
                 f'--add-data={templates_temp_folder}:templates',
                 f'--icon={favicon_path}',
+                f'--name={app_name}',
                 '--hidden-import=engineio.async_drivers.gevent',
                 'main.py'
             ])
@@ -125,4 +127,4 @@ class ViteBuilder:
         finally:
             print(f'Cleanup directory: {tempdir.name} 🧹')
             tempdir.cleanup()
-            os.remove('main.spec')
+            os.remove(f'{app_name}.spec')
